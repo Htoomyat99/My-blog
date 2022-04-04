@@ -3,6 +3,7 @@ import Home from './Home';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import CreateBlog from './CreatBlog';
 import BlogDetail from './BlogDetail';
+import ErrorPage from './ErrorPage';
 
 function App() {
   return (
@@ -17,8 +18,11 @@ function App() {
             <Route path="/blog/:id">
               <BlogDetail />
             </Route>
-            <Route path="/">
+            <Route exact path="/">
               <Home />
+            </Route>
+            <Route path="*">
+              <ErrorPage />
             </Route>
           </Switch>
         </div>

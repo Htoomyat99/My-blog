@@ -1,15 +1,27 @@
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const CreateBlog = () => {
 
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
-    const [author, setAuthor] = useState("mario");
+    const [author, setAuthor] = useState("");
+    const [isPending, setIsPending] = useState(false);
+    const history = useHistory();
 
     const SubmitHandler = (e) => {
         e.preventDefault();
         const blog = {title, body, author}
-        console.log(blog);
+        
+        fetch("http://localhost:8000/blogs", {
+            method: "POST",
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify(blog)
+        }).then(() => {
+            console.log("new blog added");
+            setIsPending(false);
+            history.push("/")
+        })
     }
 
     return ( 
@@ -29,15 +41,21 @@ const CreateBlog = () => {
                 onChange={(e) => setBody(e.target.value)}
                 ></textarea>
                 <label>Blog author:</label>
-                <select value={author}
+                {/* <select value={author}
                 onChange={(e) => setAuthor(e.target.value)}>
                     <option value="mario">mario</option>
                     <option value="yoshi">yoshi</option>
-                </select>
-                <button>Add Blog</button>
-                <p>{ title }</p>
-                <p>{ body }</p>
-                <p>{ author }</p>
+                </select> */}
+                <input type="text"
+                required
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+                />
+                {isPending ? (
+                    <button disabled>Adding blog...</button>
+                ) : (
+                    <button>Add blog</button>
+                )};
             </form>
         </div>
         
