@@ -12,6 +12,7 @@ const CreateBlog = () => {
     const SubmitHandler = (e) => {
         e.preventDefault();
         const blog = {title, body, author}
+        setIsPending(true);
         
         fetch("http://localhost:8000/blogs", {
             method: "POST",
